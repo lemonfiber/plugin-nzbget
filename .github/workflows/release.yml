@@ -1,0 +1,24 @@
+# Publish the adapter's image from every commit on main and from each train tag, and propose
+# the digest it published to plugin.toml, through spec's reusable `adapter-release`
+# (OPS-R90, OPS-R91).
+name: release
+on:
+  push:
+    tags: ["v*"]
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+      attestations: write
+    uses: lemonfiber/spec/.github/workflows/adapter-release.yml@657dcf224c2e99c6f4d47c5cfb963aad043b9cd7 # v1.0.146
+    secrets:
+      RELEASE_APP_KEY: ${{ secrets.RELEASE_APP_KEY }}
