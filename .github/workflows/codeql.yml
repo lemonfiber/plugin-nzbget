@@ -1,4 +1,4 @@
-# CodeQL static analysis of the Python tooling and the workflows (Q-R53).
+# CodeQL static analysis of the Rust crate and the workflows (Q-R53).
 name: codeql
 on:
   push:
@@ -20,15 +20,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [actions, python]
+        language: [actions, rust]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: github/codeql-action/init@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
+      - uses: github/codeql-action/init@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4.39.1
         with:
           languages: ${{ matrix.language }}
-      - uses: github/codeql-action/analyze@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
+      - uses: github/codeql-action/autobuild@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4.39.1
+        if: matrix.language == 'rust'
+      - uses: github/codeql-action/analyze@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4.39.1
         with:
           category: "/language:${{ matrix.language }}"
 
@@ -40,6 +42,6 @@ jobs:
     permissions:
       contents: read
       security-events: read
-    uses: lemonfiber/spec/.github/workflows/codeql-alerts.yml@1fcd8228494a546f53a3ffa36e5a6dba79e71b68 # v1.0.145
+    uses: lemonfiber/spec/.github/workflows/codeql-alerts.yml@657dcf224c2e99c6f4d47c5cfb963aad043b9cd7 # v1.0.146
     with:
       analysis: ${{ needs.analyze.result }}
