@@ -195,7 +195,7 @@ impl Nzbget {
         &self,
         mut next: Settings,
         carrying: bool,
-        took: impl Fn(&Settings) -> bool + Send + Sync,
+        took: &(dyn Fn(&Settings) -> bool + Send + Sync),
     ) -> Result<Settings, Failure> {
         let before: Held = self
             .call(STATUS, json!([]), "the client's state could not be read")
@@ -209,7 +209,7 @@ impl Nzbget {
         self.save(&next).await?;
         self.asked(RELOAD, json!([]), "the settings could not be taken up")
             .await?;
-        let running = self.settled(&took).await?;
+        let running = self.settled(took).await?;
         if before.download_paused {
             self.asked(PAUSE, json!([]), "the client could not be stopped again")
                 .await?;
@@ -219,7 +219,7 @@ impl Nzbget {
 
     async fn settled(
         &self,
-        took: &(impl Fn(&Settings) -> bool + Sync),
+        took: &(dyn Fn(&Settings) -> bool + Send + Sync),
     ) -> Result<Settings, Failure> {
         let mut failed = None;
         for _ in 0..RELOAD_TRIES {

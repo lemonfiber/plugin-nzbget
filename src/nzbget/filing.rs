@@ -48,7 +48,7 @@ impl Filing for Nzbget {
             }
         }
         next.renumber(CATEGORY, &categories);
-        self.reloaded(next, true, |running| holds(running, folders))
+        self.reloaded(next, true, &|running| holds(running, folders))
             .await?;
         Ok(())
     }

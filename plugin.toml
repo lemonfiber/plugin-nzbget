@@ -52,7 +52,7 @@ starts, so the pinned image, started from that file, has to refuse the queue
 to a caller presenting nothing.
 """
 request = { method = "GET", path = "/jsonrpc/listgroups" }
-expect  = { status = 401 }
+expect  = { status = 401, content_type = "text/plain" }
 
 [[ask]]
 service    = "nzbget"

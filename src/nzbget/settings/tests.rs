@@ -92,7 +92,7 @@ async fn reloading_writes_the_settings_waits_for_them_and_stops_a_stopped_client
         (200, &answer("true")),
     ]);
     let running = nzbget
-        .reloaded(settings(&[("DestDir", "/data")]), true, |running| {
+        .reloaded(settings(&[("DestDir", "/data")]), true, &|running| {
             running.get("Category1.Name") == "tv"
         })
         .await;
@@ -134,7 +134,7 @@ async fn reloading_without_carrying_leaves_the_rate_and_a_running_client_running
         (200, &answer(RUNNING)),
     ]);
     assert!(nzbget
-        .reloaded(settings(&[("DestDir", "/data")]), false, |_| true)
+        .reloaded(settings(&[("DestDir", "/data")]), false, &|_| true)
         .await
         .is_ok());
     assert_eq!(methods(&http), ["status", "saveconfig", "reload", "config"]);
@@ -156,7 +156,7 @@ async fn a_client_that_never_takes_the_settings_up_is_a_failure_that_says_so() {
             .collect(),
     );
     let refused = nzbget
-        .reloaded(Settings::default(), false, |running| {
+        .reloaded(Settings::default(), false, &|running| {
             running.get("x") == "y"
         })
         .await;
@@ -182,7 +182,7 @@ async fn a_client_that_stops_answering_through_a_reload_is_unavailable() {
             .collect(),
     );
     assert!(matches!(
-        nzbget.reloaded(Settings::default(), false, |_| true).await,
+        nzbget.reloaded(Settings::default(), false, &|_| true).await,
         Err(lemonfiber_ports::service::Failure::Unavailable { .. })
     ));
 }
@@ -208,7 +208,7 @@ async fn a_client_that_will_not_write_or_reload_is_a_failure() {
     ] {
         let (nzbget, _) = client(replies);
         assert!(nzbget
-            .reloaded(Settings::default(), false, |_| true)
+            .reloaded(Settings::default(), false, &|_| true)
             .await
             .is_err());
     }

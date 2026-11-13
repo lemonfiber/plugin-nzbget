@@ -58,7 +58,7 @@ impl Throttling for Nzbget {
             }
         } else {
             keeping(&mut next, &turns);
-            self.reloaded(next, false, |running| keeps(running, &turns))
+            self.reloaded(next, false, &|running| keeps(running, &turns))
                 .await?;
         }
         self.throttled().await
