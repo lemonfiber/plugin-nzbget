@@ -18,6 +18,13 @@ the core at the commit `Cargo.toml` pins, into the image the `Dockerfile` builds
 `release.yml` publishes that image from every commit on `main` and from the
 train's tag.
 
+`conformance/` holds one recording per case of the contract the adapter speaks.
+`lemonfiber plugin record .`, at the commit `targets.toml` names, writes them
+against a throwaway NZBGet at the digest `plugin.toml` pins and the adapter
+it pins; CI takes every recording again with the adapter built from this tree.
+Re-record whenever the adapter's answers or either digest change.
+`tests/conformance.rs` reads every recording with the core's own client.
+
 The adapter asks NZBGet's JSON-RPC API at `/jsonrpc`, signed in with the control
 account lemonfiber minted. NZBGet takes up a changed setting only on a reload,
 which also starts it fetching at its own rate, so the adapter writes the rate it
@@ -48,9 +55,9 @@ is held to with the settings and stops a stopped NZBGet again afterwards.
 - **The core's crates move with the train.** The `rev` in `Cargo.toml` is the
   core commit `targets.toml` names, the same for every `lemonfiber-*` crate.
 - **Moving NZBGet's digest** means taking `nzbget.conf` from the new image's
-  template again, recording every proof's response again against the new image
-  in the same change, moving `RELEASE` and `DIGEST` in `src/adapter.rs` with it,
-  and committing the `proofs.json` the checks write.
+  template again, recording every proof's response and conformance case again
+  against the new image in the same change, moving `RELEASE` and `DIGEST` in
+  `src/adapter.rs` with it, and committing the `proofs.json` the checks write.
 
 ## Checks
 
