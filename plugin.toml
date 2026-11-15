@@ -26,6 +26,23 @@ reaches     = "your Usenet provider"
 asks_for    = "Signs in with your account and fetches the articles a download is made of."
 takes_data  = true
 user_mode   = "puid-env"
+native      = "nzbget"
+
+[[service]]
+id          = "nzbget-adapter"
+name        = "NZBGet adapter"
+image       = "ghcr.io/lemonfiber/nzbget-adapter"
+digest      = "sha256:3b88dce28fead845407721ba10159191a63cd25e7a737dbedf4a9cc579a36bc2"
+tag         = "main-7d1222d03ca6"
+criticality = "core"
+reaches     = ""
+asks_for    = "Nothing beyond this machine. It answers lemonfiber's download.usenet contract by signing in to NZBGet, beside it, with the account lemonfiber minted for it."
+config_path = "/config"
+listens     = 8080
+speaks      = ["download.usenet@1"]
+fronts      = "nzbget"
+provides    = ["download.usenet"]
+upstream    = { username = { secret = "upstream-username" }, password = { secret = "upstream-password" } }
 
 [[secret]]
 id     = "upstream-username"

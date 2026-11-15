@@ -23,6 +23,7 @@ the adapter's `upstream.json`, and hands them to nothing else.
 | `plugin.toml` | The part's manifest |
 | `config/nzbget/` | The files NZBGet starts with, written into its configuration directory |
 | `recordings/nzbget/` | The responses its proofs are held to |
+| `conformance/download.usenet@1/` | The adapter's answer to each conformance case, in front of the pinned NZBGet |
 | `src/` | The adapter |
 | `Dockerfile` | The adapter's image |
 | `targets.toml` | The lemonfiber its checks run against, and the core the adapter is built on |
@@ -35,9 +36,9 @@ The plugin verdict is one job of spec's
 workflow: the manifest as the lemonfiber `targets.toml` names reads it, every
 proof against its recording, and every pinned digest. The adapter is held to its
 format, its lints, its tests, full line coverage and its dependency policy, its
-image runs as lemonfiber runs it, and `recordings` takes every recording again
-against the pinned NZBGet. `just ci` runs the gates that need nothing but this
-tree.
+image runs as lemonfiber runs it, and `recordings` takes every proof's recording
+and every conformance case again against the pinned NZBGet. `just ci` runs the
+gates that need nothing but this tree.
 
 ## Licence
 
