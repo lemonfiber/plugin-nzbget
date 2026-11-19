@@ -14,11 +14,7 @@ pub const ADDRESS: &str = "http://nzbget:6789";
 /// The upstream this adapter fronts, as its project names itself.
 pub const UPSTREAM: &str = "NZBGet";
 
-/// The NZBGet release this adapter's recordings were taken from.
-pub const RELEASE: &str = "v26.3-ls271";
-
-/// The digest of the image that release's recordings were taken from.
-pub const DIGEST: &str = "sha256:6f86d5cb17fa12c214e0c699addde8ee5b9622fbafd2f4dc2eb8f89e7251dc49";
+include!(concat!(env!("OUT_DIR"), "/fronted.rs"));
 
 /// What this adapter says it is: the contract it speaks and the release it supports.
 #[must_use]
