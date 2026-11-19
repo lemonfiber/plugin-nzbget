@@ -56,8 +56,9 @@ is held to with the settings and stops a stopped NZBGet again afterwards.
   core commit `targets.toml` names, the same for every `lemonfiber-*` crate.
 - **Moving NZBGet's digest** means taking `nzbget.conf` from the new image's
   template again, recording every proof's response and conformance case again
-  against the new image in the same change, moving `RELEASE` and `DIGEST` in
-  `src/adapter.rs` with it, and committing the `proofs.json` the checks write.
+  against the new image in the same change, moving its `tag` with it (`build.rs`
+  reads `RELEASE` and `DIGEST` from `plugin.toml`, their one home), and
+  committing the `proofs.json` the checks write.
 
 ## Checks
 
